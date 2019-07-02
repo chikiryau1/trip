@@ -1,10 +1,12 @@
 import React from 'react';
+import {List, Map} from './ui/components'
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      kj
-    </div>
+    <>
+      <Map/>
+      {/*<List/>*/}
+    </>
   );
 };
 
