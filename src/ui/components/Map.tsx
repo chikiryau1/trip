@@ -25,8 +25,14 @@ interface MapInterface {
   },
 }
 
+interface MarkListInterface extends MarkerProps {
+  items: {
+    [index: number]: ListItemInterface
+  },
+}
+
 interface MarkInterface extends MarkerProps {
-  active: boolean
+  active?: boolean
 }
 
 //var goldStar = {
@@ -52,44 +58,73 @@ const Mark = ({position, active}: MarkInterface) => (
 );
 
 
-// class MapComponent extends PureComponent<MapInterface>{
-//
-// }
+class Markers extends PureComponent<MarkListInterface>{
+  render(){
+    const {
+      items
+    } = this.props;
+    console.log('LOOP', items);
+    return map(items, (item, key) => {
+      return <>
+        <Mark
+          key={item.time.start + key + item.time.end}
+          position={{
+            lat: item.startStation.lat,
+            lng: item.startStation.lng
+          }}
+          label={item.startStation.name}
+        />
 
-const WrappedMap = withScriptjs(withGoogleMap((props: MapInterface) =>
-  <GoogleMap
-    defaultZoom={14}
-    defaultCenter={{lat: props.items[0].startStation.lat, lng: props.items[0].startStation.lng}}
-  >
-    {
-      map(props.items, (item, key) => {
-        const active = parseInt(key, 10) === props.active;
-        console.log('LOOP', parseInt(key, 10), props.active);
-        return <>
-          <Mark
-            key={item.time.start + key + item.time.end}
-            active={active}
-            position={{
-              lat: item.startStation.lat,
-              lng: item.startStation.lng
-            }}
-            label={item.startStation.name}
-          />
+        <Mark
+          key={item.time.end + key + item.time.start}
+          position={{
+            lat: item.endStation.lat,
+            lng: item.endStation.lng
+          }}
+          label={item.endStation.name}
+        />
+      </>
+    })
+  }
+}
 
-          <Mark
-            key={item.time.end + key + item.time.start}
-            active={active}
-            position={{
-              lat: item.endStation.lat,
-              lng: item.endStation.lng
-            }}
-            label={item.endStation.name}
-          />
-        </>
-      })
-    }
-  </GoogleMap>
-));
+
+class MapComponent extends PureComponent<MapInterface> {
+  render() {
+    const {
+      items,
+      active
+    } = this.props;
+
+    const activeItem = items[active];
+
+    return <GoogleMap
+      defaultZoom={14}
+      defaultCenter={{lat: items[0].startStation.lat, lng: items[0].startStation.lng}}
+    >
+      <Markers items={items} />
+
+      <Mark
+        position={{
+          lat: activeItem.startStation.lat,
+          lng: activeItem.startStation.lng
+        }}
+        label={activeItem.startStation.name}
+        active
+      />
+      <Mark
+        position={{
+          lat: activeItem.endStation.lat,
+          lng: activeItem.endStation.lng
+        }}
+        label={activeItem.endStation.name}
+        active
+      />
+    </GoogleMap>
+  }
+}
+
+const WrappedMap = withScriptjs(withGoogleMap(MapComponent));
 
 const key = 'AIzaSyDS5nV5nNisxsr_kWTu-p8Lay7rfialZHw';
 
