@@ -4,6 +4,8 @@ import {withScriptjs, withGoogleMap, GoogleMap, Circle, Marker, MarkerProps, Inf
 import styled from 'styled-components'
 import {Preloader} from '../primitives'
 import {FormattedData as ListItemInterface} from '../../data';
+import InfoBox from 'react-google-maps/lib/components/addons/InfoBox'
+
 
 const MapWrapper = styled.div`
   height: 100vh;
@@ -32,7 +34,8 @@ interface MarkListInterface extends MarkerProps {
 }
 
 interface MarkInterface extends MarkerProps {
-  active?: boolean
+  active?: boolean,
+  children?: JSX.Element
 }
 
 //var goldStar = {
@@ -44,17 +47,19 @@ interface MarkInterface extends MarkerProps {
 //     strokeWeight: 14
 //   };
 
-const Mark = ({position, active}: MarkInterface) => (
+const Mark = ({position, active, children}: MarkInterface) => (
   <Marker
     position={position}
     icon={{
-      path: 'M 0 -15 m -5, 0 a 5,5 0 1,0 10,0 a 5,5 0 1,0 -10,0',
+      path: active ? 'M 0 -10 m -5, 0 a 5,5 0 1,0 10,0 a 5,5 0 1,0 -10,0' : 'M 0 -15 m -5, 0 a 5,5 0 1,0 10,0 a 5,5 0 1,0 -10,0',
       scale: active ? 2 : 1,
       strokeWeight: 0,
       fillColor: active ? '#ff0000' : '#000',
       fillOpacity: 1
     }}
-  />
+  >
+    {children}
+  </Marker>
 );
 
 
@@ -88,7 +93,6 @@ class Markers extends PureComponent<MarkListInterface>{
   }
 }
 
-
 class MapComponent extends PureComponent<MapInterface> {
   render() {
     const {
@@ -109,17 +113,35 @@ class MapComponent extends PureComponent<MapInterface> {
           lat: activeItem.startStation.lat,
           lng: activeItem.startStation.lng
         }}
-        label={activeItem.startStation.name}
         active
-      />
+      >
+        <InfoWindow
+          position={{
+            lat: activeItem.startStation.lat,
+            lng: activeItem.startStation.lng
+          }}
+        >
+          <span>{activeItem.startStation.name}</span>
+        </InfoWindow>
+      </Mark>
+
       <Mark
         position={{
           lat: activeItem.endStation.lat,
           lng: activeItem.endStation.lng
         }}
-        label={activeItem.endStation.name}
         active
-      />
+      >
+        <InfoWindow
+          position={{
+            lat: activeItem.endStation.lat,
+            lng: activeItem.endStation.lng
+          }}
+        >
+          <span>{activeItem.endStation.name}</span>
+        </InfoWindow>
+      </Mark>
+
     </GoogleMap>
   }
 }
@@ -149,6 +171,7 @@ export default class Map extends PureComponent<MapComponentInterface> {
       containerElement={<MapWrapper/>}
       mapElement={<MapContainer/>}
       active={active}
+      // active={9}
       items={items}
     />
   }
