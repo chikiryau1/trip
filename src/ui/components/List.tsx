@@ -48,20 +48,19 @@ const ListItem = ({ item, onClick, onMouseOver }: ListItemProps) => <Item onClic
 export default class List extends PureComponent<ListProps>{
 
   onMouseOver = throttle((index:number) => {
-    console.log(index);
     this.props.setActive(index)
   }, 200);
 
   render(){
     const {
       items,
-      setActive
     } = this.props;
     console.log('RENDER LIST');
 
     return <ListWrapper>
       {
-        map(items, (item:ListItemInterface, index:number) => {
+        map(items, (item:ListItemInterface, key) => {
+          const index = parseInt(key, 10);
           return <ListItem
             onMouseOver={() => this.onMouseOver(index)}
             onClick={() => this.onMouseOver(index)}

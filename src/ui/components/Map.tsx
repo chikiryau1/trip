@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import map from 'lodash.map'
 import {withScriptjs, withGoogleMap, GoogleMap, Circle, Marker} from 'react-google-maps'
 import styled from 'styled-components'
 import {Preloader} from '../primitives'
@@ -19,7 +20,7 @@ interface MapInterface {
   loadingElement: JSX.Element,
   containerElement: JSX.Element,
   mapElement: JSX.Element,
-  active: ListItemInterface,
+  active: number,
   items: {
     [index: number]: ListItemInterface
   },
@@ -28,19 +29,59 @@ interface MapInterface {
 interface PointInterface {
   lat: number,
   lng: number,
-  radius: number
+  radius: number,
+  fillColor: string
 }
 
-const Point = ({lat, lng, radius}: PointInterface) => <Circle center={{lat, lng}} radius={radius}/>;
+//{
+//       strokeColor: '#FF0000',
+//       strokeOpacity: 0.8,
+//       strokeWeight: 2,
+//       fillColor: '#FF0000',
+//       fillOpacity: 0.35,
+//       map: map,
+//       center: citymap[city].center,
+//       radius: Math.sqrt(citymap[city].population) * 100
+//     }
+
+const Point = ({lat, lng, radius, fillColor}: PointInterface) => (
+  <Circle
+    center={{lat, lng}}
+    radius={radius}
+    options={{fillColor, fillOpacity: 1, strokeWeight: 0}}
+  />
+);
 
 const MapComponent = withScriptjs(withGoogleMap((props: MapInterface) =>
   <GoogleMap
     defaultZoom={14}
-    defaultCenter={{lat: props.active.startStation.lat, lng: props.active.startStation.lng}}
+    defaultCenter={{lat: props.items[0].startStation.lat, lng: props.items[0].startStation.lng}}
   >
-    {/*<Point lat={props.active.startStation.lat} lng={props.active.startStation.lng} radius={10}/>*/}
-    <Marker position={{lat: props.active.endStation.lat, lng: props.active.endStation.lng}}/>
-    <Marker position={{lat: props.items[0].endStation.lat, lng: props.items[0].endStation.lng}}/>
+    {
+      map(props.items, (item, key) => {
+        const active = parseInt(key, 10) === props.active;
+        console.log('LOOP', parseInt(key, 10), props.active);
+        return <>
+          <Point
+            key={item.time.start + key}
+            lat={item.startStation.lat}
+            lng={item.startStation.lng}
+            radius={active ? 100 : 50}
+            fillColor={active ? '#ff0000' : '#000'}
+          />
+          <Point
+            key={item.time.end + key}
+            lat={item.endStation.lat}
+            lng={item.endStation.lng}
+            radius={active ? 100 : 50}
+            fillColor={active ? '#ff0000' : '#000'}
+          />
+        </>
+      })
+    }
+
+    {/*<Marker position={{lat: props.active.endStation.lat, lng: props.active.endStation.lng}}/>*/}
+    {/*<Marker position={{lat: props.items[0].endStation.lat, lng: props.items[0].endStation.lng}}/>*/}
   </GoogleMap>
 ));
 
@@ -55,11 +96,11 @@ interface MapComponentInteraface {
 
 export default class Map extends PureComponent<MapComponentInteraface> {
   render() {
-    console.log('MAP RENDER');
     const {
       items,
       active
     } = this.props;
+    console.log('MAP RENDER', active);
 
     return <MapComponent
       isMarkerShown
@@ -67,7 +108,7 @@ export default class Map extends PureComponent<MapComponentInteraface> {
       loadingElement={<div style={{height: `100%`}}><Preloader/></div>}
       containerElement={<MapWrapper/>}
       mapElement={<MapContainer/>}
-      active={items[active]}
+      active={active}
       items={items}
     />
   }
