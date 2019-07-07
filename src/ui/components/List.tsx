@@ -1,23 +1,75 @@
 import React, {PureComponent} from 'react';
+import styled from 'styled-components'
+import throttle from 'lodash.throttle'
+import map from 'lodash.map'
+import {FormattedData as ListItemInterface} from '../../data';
 
-interface L {
-  [index: number]: {
-    "tripduration": 932,
-    "starttime": "2018-01-01 02:06:17.5410",
-    "stoptime": "2018-01-01 02:21:50.0270",
-    "start station id": 3183,
-    "start station name": "Exchange Place",
-    "start station latitude": 40.7162469,
-    "start station longitude": -74.0334588,
-    "end station id": 3199,
-    "end station name": "Newport Pkwy",
-    "end station latitude": 40.7287448,
-    "end station longitude": -74.0321082,
-  }
+interface ListProps {
+  items: {
+    [index:number]: ListItemInterface
+  },
+  setActive: (a: number) => void,
 }
 
-export default class List extends PureComponent{
+interface ListItemProps {
+  item: ListItemInterface,
+  onClick: (event: React.MouseEvent<HTMLElement>) => void
+  onMouseOver: (event: React.MouseEvent<HTMLElement>) => void
+}
+
+const ListWrapper = styled.div`
+  height: 100%;
+  overflow-y: scroll;
+`;
+
+const Item = styled.div`
+  border: 1px solid #000;
+`;
+
+const Station = styled.div`
+  
+`;
+
+const Duration = styled.div`
+  
+`;
+
+const Time = styled.div`
+  
+`;
+
+const ListItem = ({ item, onClick, onMouseOver }: ListItemProps) => <Item onClick={onClick} onMouseOver={onMouseOver}>
+  from: <Station>{item.startStation.name}</Station>
+  to: <Station>{item.endStation.name}</Station>
+  duration: <Duration>{item.duration}</Duration>
+  time: <Time>{item.time.start} - {item.time.end}</Time>
+</Item>;
+
+export default class List extends PureComponent<ListProps>{
+
+  onMouseOver = throttle((index:number) => {
+    console.log(index);
+    this.props.setActive(index)
+  }, 200);
+
   render(){
-    return null
+    const {
+      items,
+      setActive
+    } = this.props;
+    console.log('RENDER LIST');
+
+    return <ListWrapper>
+      {
+        map(items, (item:ListItemInterface, index:number) => {
+          return <ListItem
+            onMouseOver={() => this.onMouseOver(index)}
+            onClick={() => this.onMouseOver(index)}
+            item={item}
+            key={item.duration + index}
+          />
+        })
+      }
+    </ListWrapper>
   }
 }

@@ -1,13 +1,13 @@
 import data from './data.json'
 
-interface Station{
-  id: string,
+export interface Station{
+  id: number,
   name: string,
-  lat: string,
-  lng: string
+  lat: number,
+  lng: number
 }
 
-interface Format {
+export interface FormattedData {
   duration: number,
   time: {
     start: string,
@@ -17,37 +17,50 @@ interface Format {
   endStation: Station,
 }
 
-// function formatData(data: object[]) {
-//   return data.map(item => {
-//     const formatedItem = {} as Format;
-//     formatedItem.duration = item.tripduration;
-//     formatedItem.time = {
-//       start: item['starttime'],
-//       end: item['endtime']
-//     };
-//     formatedItem
-//   })
-// }
+interface RawData {
+  'tripduration': number,
+  'starttime': string,
+  'stoptime': string,
+  'start station id': number,
+  'start station name': string,
+  'start station latitude': number,
+  'start station longitude': number,
+  'end station id': number,
+  'end station name': string,
+  'end station latitude': number,
+  'end station longitude': number,
+  'bikeid': number,
+  'usertype': string,
+  'birth year': number,
+  'gender': number
+}
+
+function formatData(data: RawData[]) {
+  return data.map((item:RawData) => {
+    const formatedItem = {} as FormattedData;
+    formatedItem.duration = item.tripduration;
+    formatedItem.time = {
+      start: item['starttime'],
+      end: item['stoptime']
+    };
+    formatedItem.startStation = {
+      id: item['start station id'],
+      name: item['start station name'],
+      lat: item['start station latitude'],
+      lng: item['start station longitude'],
+    };
+    formatedItem.endStation = {
+      id: item['end station id'],
+      name: item['end station name'],
+      lat: item['end station latitude'],
+      lng: item['end station longitude'],
+    };
+    return formatedItem
+  })
+}
 
 export function getData() {
   // return Promise.resolve(Object.assign({}, data.slice(0, 10)));
-  const slicedData : object[] = data.slice(0, 10);
-  return Promise.resolve(slicedData);
+  const slicedData : RawData[] = data.slice(0, 10);
+  return Promise.resolve(Object.assign({}, formatData(slicedData)));
 }
-
-
-//"tripduration": 932,
-//    "starttime": "2018-01-01 02:06:17.5410",
-//    "stoptime": "2018-01-01 02:21:50.0270",
-//    "start station id": 3183,
-//    "start station name": "Exchange Place",
-//    "start station latitude": 40.7162469,
-//    "start station longitude": -74.0334588,
-//    "end station id": 3199,
-//    "end station name": "Newport Pkwy",
-//    "end station latitude": 40.7287448,
-//    "end station longitude": -74.0321082,
-//    "bikeid": 31929,
-//    "usertype": "Subscriber",
-//    "birth year": 1992,
-//    "gender": 1
