@@ -33,15 +33,16 @@ interface MarkListInterface extends MarkerProps {
 
 interface MarkInterface extends MarkerProps {
   active?: boolean,
-  children?: JSX.Element
+  children?: JSX.Element,
+  radius?: number
 }
 
-const Mark = ({position, active, children}: MarkInterface) => (
+const Mark = ({position, active, children, radius}: MarkInterface) => (
   <Marker
     position={position}
     icon={{
-      path: active ? 'M 0 -10 m -5, 0 a 5,5 0 1,0 10,0 a 5,5 0 1,0 -10,0' : 'M 0 -15 m -5, 0 a 5,5 0 1,0 10,0 a 5,5 0 1,0 -10,0',
-      scale: active ? 2 : 1,
+      path: active ? `M 0 ${radius ? -10/(radius-3 || radius) : -10} m -5, 0 a 5,5 0 1,0 10,0 a 5,5 0 1,0 -10,0` : 'M 0 -15 m -5, 0 a 5,5 0 1,0 10,0 a 5,5 0 1,0 -10,0',
+      scale: active ? radius : 1,
       strokeWeight: 0,
       fillColor: active ? '#ff0000' : '#000',
       fillOpacity: 1
@@ -101,6 +102,7 @@ class MapComponent extends PureComponent<MapInterface> {
           lat: activeItem.startStation.lat,
           lng: activeItem.startStation.lng
         }}
+        radius={activeItem.normDuration}
         active
       >
         <InfoWindow
@@ -118,6 +120,7 @@ class MapComponent extends PureComponent<MapInterface> {
           lat: activeItem.endStation.lat,
           lng: activeItem.endStation.lng
         }}
+        radius={activeItem.normDuration}
         active
       >
         <InfoWindow

@@ -7,6 +7,7 @@ export interface Station{
 
 export interface FormattedData {
   duration: number,
+  normDuration: number,
   time: {
     start: string,
     end: string,
