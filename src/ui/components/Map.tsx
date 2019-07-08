@@ -136,8 +136,6 @@ class MapComponent extends PureComponent<MapInterface> {
 
 const WrappedMap = withScriptjs(withGoogleMap(MapComponent));
 
-const key = 'AIzaSyDS5nV5nNisxsr_kWTu-p8Lay7rfialZHw';
-
 interface MapComponentInterface {
   items: {
     [index: number]: ListItemInterface
@@ -154,7 +152,7 @@ export default class Map extends PureComponent<MapComponentInterface> {
     console.log('MAP RENDER', active);
 
     return <WrappedMap
-      googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${key}&libraries=drawing&language=en&region=EG`}
+      googleMapURL={'https://findanyjob.herokuapp.com/tripData/map'}
       loadingElement={<div style={{height: `100%`}}><Preloader/></div>}
       containerElement={<MapWrapper/>}
       mapElement={<MapContainer/>}

@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 import styled from 'styled-components'
 import {List, Map} from './ui/components'
 import {Preloader} from './ui/primitives'
-import {getData} from './data'
+import {initWorker} from './data'
 import {FormattedData as ListItemInterface} from './data';
 
 const Wrapper = styled.div`
@@ -32,14 +32,18 @@ class App extends PureComponent<Props, State> {
       activeId: 0,
       fetching: true
     };
-    getData()
+
+    initWorker()
+      .then(data => {
+        return data as ListItemInterface[]
+      })
       .then((data: ListItemInterface[]) => {
         this.setState({
           items: data,
           activeId: 0,
           fetching: false
         })
-      })
+      });
   };
 
   setActiveItem = (activeId: number) => {
@@ -63,9 +67,11 @@ class App extends PureComponent<Props, State> {
     console.log('RENDER APP');
     return <Wrapper>
       {
-        fetching ? <Preloader/> : <List items={items} setActive={this.setActiveItem}/>
+        fetching ? <Preloader/> : <>
+          <List items={items} setActive={this.setActiveItem}/>
+          <Map items={items} active={activeId}/>
+        </>
       }
-      <Map items={items} active={activeId}/>
     </Wrapper>
   }
 }
