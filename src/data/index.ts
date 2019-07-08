@@ -11,6 +11,7 @@ export interface FormattedData {
   time: {
     start: string,
     end: string,
+    day: string,
   },
   startStation: Station,
   endStation: Station,

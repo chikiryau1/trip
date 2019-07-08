@@ -8,12 +8,13 @@ function formatData(data) {
 
   return data.map((item) => {
     const formattedItem = {};
-    formattedItem.duration = item.tripduration;
+    formattedItem.duration = durationFormat(item.tripduration);
     formattedItem.normDuration = normDuration(item.tripduration);
 
     formattedItem.time = {
-      start: item['starttime'],
-      end: item['stoptime']
+      start: timeFormat(item['starttime']),
+      end: timeFormat(item['stoptime']),
+      day: dayFormat(item['starttime'], item['stoptime'])
     };
     formattedItem.startStation = {
       id: item['start station id'],
@@ -31,6 +32,23 @@ function formatData(data) {
   })
 }
 
+function dayFormat (start, end) {
+  const st = start.split(' ')[0]
+  const en = end.split(' ')[0]
+  if (st === en) {
+    return st.split('-').reverse().join('.')
+  } else {
+    return `${st.split('-').reverse().join('.')} - ${en.split('-').reverse().join('.')}`
+  }
+}
+
+function durationFormat (duration) {
+  return `${Math.floor(duration / 60)}:${duration - 60 * Math.floor(duration / 60)}`
+}
+
+function timeFormat (timestamp) {
+  return timestamp.split(' ')[1].split('.')[0]
+}
 
 function normalize ({min, max}) {
   return function (value) {

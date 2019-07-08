@@ -6,6 +6,7 @@ import {initWorker} from './data'
 import {FormattedData as ListItemInterface} from './data';
 
 const Wrapper = styled.div`
+  position: relative;
   display: flex;
   width: 100%;
   height: 100vh;

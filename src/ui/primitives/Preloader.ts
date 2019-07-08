@@ -9,8 +9,10 @@ const loadingAnimation = keyframes`
   }
 `;
 
-
 export default styled.div`
+  position: absolute;
+  top: calc(50% - 70px);
+  left: calc(50% - 70px);
   border: 5px solid #f3f3f3; /* Light grey */
   border-top: 5px solid #3498db; /* Blue */
   border-radius: 50%;
