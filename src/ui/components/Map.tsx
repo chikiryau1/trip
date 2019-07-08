@@ -1,11 +1,9 @@
 import React, {PureComponent} from 'react';
 import map from 'lodash.map'
-import {withScriptjs, withGoogleMap, GoogleMap, Circle, Marker, MarkerProps, InfoWindow} from 'react-google-maps'
+import {withScriptjs, withGoogleMap, GoogleMap, Marker, MarkerProps, InfoWindow} from 'react-google-maps'
 import styled from 'styled-components'
 import {Preloader} from '../primitives'
 import {FormattedData as ListItemInterface} from '../../data';
-import InfoBox from 'react-google-maps/lib/components/addons/InfoBox'
-
 
 const MapWrapper = styled.div`
   height: 100vh;
@@ -38,15 +36,6 @@ interface MarkInterface extends MarkerProps {
   children?: JSX.Element
 }
 
-//var goldStar = {
-//     path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
-//     fillColor: 'yellow',
-//     fillOpacity: 0.8,
-//     scale: 1,
-//     strokeColor: 'gold',
-//     strokeWeight: 14
-//   };
-
 const Mark = ({position, active, children}: MarkInterface) => (
   <Marker
     position={position}
@@ -61,7 +50,6 @@ const Mark = ({position, active, children}: MarkInterface) => (
     {children}
   </Marker>
 );
-
 
 class Markers extends PureComponent<MarkListInterface>{
   render(){
@@ -166,12 +154,11 @@ export default class Map extends PureComponent<MapComponentInterface> {
     console.log('MAP RENDER', active);
 
     return <WrappedMap
-      googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${key}&libraries=drawing`}
+      googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${key}&libraries=drawing&language=en&region=EG`}
       loadingElement={<div style={{height: `100%`}}><Preloader/></div>}
       containerElement={<MapWrapper/>}
       mapElement={<MapContainer/>}
       active={active}
-      // active={9}
       items={items}
     />
   }
