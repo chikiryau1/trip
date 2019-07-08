@@ -1,43 +1,30 @@
 {
-  "name": "trip",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@types/jest": "24.0.15",
-    "@types/lodash.map": "^4.6.13",
-    "@types/lodash.throttle": "^4.1.6",
-    "@types/node": "12.0.10",
-    "@types/react": "16.8.22",
-    "@types/react-dom": "16.8.4",
-    "@types/styled-components": "^4.1.16",
-    "lodash.map": "^4.6.0",
-    "lodash.throttle": "^4.1.1",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-google-maps": "^9.4.5",
-    "react-scripts": "3.0.1",
-    "styled-components": "^4.3.2",
-    "typescript": "3.5.2"
-  },
+  "name": "preset_rest_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=dev react-scripts start",
-    "build": "NODE_ENV=production react-scripts build",
-    "test": "../node_modules/.bin/react-scripts test",
-    "eject": "../node_modules/.bin/react-scripts eject"
+    "start": "nodemon --exec babel-node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "express-favicon": "^2.0.1",
+    "nodemon": "^1.18.4",
+    "path": "^0.12.7",
+    "request": "^2.88.0"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/preset-env": "^7.4.5"
   }
 }
