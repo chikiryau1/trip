@@ -1,7 +1,7 @@
-import express from 'express'
-import cors from 'cors'
-import path from 'path'
-import favicon from 'express-favicon'
+const express = require('express')
+const cors = require('cors')
+const path = require('path')
+const favicon = require('express-favicon')
 
 const PORT = process.env.PORT || 8000;
 
