@@ -10,7 +10,7 @@ onmessage = async function (e) {
   if(type === 'init'){
     const data = await get('https://findanyjob.herokuapp.com/tripData')
       .then((data) => {
-        return formatData(data.slice(0, 10))
+        return formatData(data.slice(50, 100))
       });
     postMessage(Object.assign({}, data))
   }
