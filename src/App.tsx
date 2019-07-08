@@ -65,7 +65,6 @@ class App extends PureComponent<Props, State> {
       activeId,
       fetching
     } = this.state;
-    console.log('RENDER APP');
     return <Wrapper>
       {
         fetching ? <Preloader/> : <>

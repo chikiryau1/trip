@@ -15,7 +15,6 @@ export default class Markers extends PureComponent<MarkListInterface>{
     const {
       items
     } = this.props;
-    console.log('LOOP', items);
     return map(items, (item, key) => {
       return <>
         <Mark

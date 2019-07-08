@@ -28,7 +28,6 @@ export default class List extends PureComponent<ListProps>{
     const {
       items,
     } = this.props;
-    console.log('RENDER LIST');
 
     return <ListWrapper>
       {

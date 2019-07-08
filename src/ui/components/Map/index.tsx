@@ -26,7 +26,6 @@ export default class Map extends PureComponent<MapComponentInterface> {
       items,
       active
     } = this.props;
-    console.log('MAP RENDER', active);
 
     return <WrappedMap
       googleMapURL={'https://findanyjob.herokuapp.com/tripData/map'}
